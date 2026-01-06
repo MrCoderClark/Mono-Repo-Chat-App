@@ -1,11 +1,12 @@
 {
   "name": "@monorepo-chatapp/common",
   "version": "1.0.0",
+  "type": "module",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc --project tsconfig.json"
   },
   "keywords": [],
   "author": "",
@@ -14,5 +15,8 @@
   "dependencies": {
     "pino": "^10.1.0",
     "zod": "^4.3.5"
+  },
+  "exports": {
+    ".": "./dist/index.js"
   }
 }

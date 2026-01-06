@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "pnpm -I --workspace-root=false run build",
-    "dev": "pnpm -I --workspace-root=false run dev",
+    "build": "pnpm -r build",
+    "dev": "pnpm -r dev",
     "lint": "pnpm -I --workspace-root=false run lint",
     "fotrmat": "pnpm -I --workspace-root=false run format",
     "test": "pnpm -I --workspace-root=false run test"
@@ -22,5 +22,8 @@
     "prettier": "^3.7.4",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "pino-pretty": "^13.1.3"
   }
 }
