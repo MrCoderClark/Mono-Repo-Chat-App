@@ -16,21 +16,28 @@ const main = async () => {
 
     const shutdown = () => {
       logger.info("Shutting down auth service");
+      server.close(() => process.exit(0));
     };
 
-    Promise.all([])
-      .catch((error) => {
-        logger.error(
-          `Error shutting down auth service. Error: ${JSON.stringify(error)}`
-        );
-        process.exit(0);
-      })
-      .finally(() => {
-        server.close(() => process.exit(0));
-      });
+    // Promise.all([])
+    //   .catch((error) => {
+    //     logger.error(
+    //       `Error shutting down auth service. Error: ${JSON.stringify(error)}`
+    //     );
+    //     process.exit(0);
+    //   })
+    //   .finally(() => {
+    //     server.close(() => process.exit(0));
+    //   });
 
+    // Unix signals (Linux/macOS)
     process.on("SIGINT", shutdown);
     process.on("SIGTERM", shutdown);
+
+    // Log on any exit (sync only)
+    process.on("exit", (code) => {
+      console.log(`Auth service exited with code ${code}`);
+    });
   } catch (error) {
     logger.error(
       `Failed to start auth service. Error: ${JSON.stringify(error)}`
