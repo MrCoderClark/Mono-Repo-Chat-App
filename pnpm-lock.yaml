@@ -39,12 +39,19 @@ importers:
 
   packages/common:
     dependencies:
+      express:
+        specifier: ^5.2.1
+        version: 5.2.1
       pino:
         specifier: ^10.1.0
         version: 10.1.0
       zod:
         specifier: ^4.3.5
         version: 4.3.5
+    devDependencies:
+      '@types/express':
+        specifier: ^5.0.6
+        version: 5.0.6
 
   services/auth-service:
     dependencies:

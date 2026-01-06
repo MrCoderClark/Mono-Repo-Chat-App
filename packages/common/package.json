@@ -13,10 +13,14 @@
   "license": "ISC",
   "packageManager": "pnpm@10.27.0",
   "dependencies": {
+    "express": "^5.2.1",
     "pino": "^10.1.0",
     "zod": "^4.3.5"
   },
   "exports": {
     ".": "./dist/index.js"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6"
   }
 }
