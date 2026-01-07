@@ -1,0 +1,32 @@
+{
+    "name": "@monorepo-chatapp/gateway-service",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "build": "tsc --project tsconfig.json",
+        "dev": "tsx watch -r tsconfig-paths/register src/index.ts",
+        "start": "node watch dist/index.js",
+        "lint": "eslint \"src/**/*.ts\"",
+        "typecheck": "tsc --noEmit --project tsconfig.json",
+        "test": "echo \"No tests yet\"",
+        "format": "prettier --check \"src/**/*.ts\""
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "packageManager": "pnpm@10.27.0",
+    "dependencies": {
+        "@monorepo-chatapp/common": "workspace:^",
+        "axios": "^1.13.2",
+        "cors": "^2.8.5",
+        "express": "^5.2.1",
+        "helmet": "^8.1.0",
+        "jsonwebtoken": "^9.0.3"
+    },
+    "devDependencies": {
+        "@types/cors": "^2.8.19",
+        "@types/express": "^5.0.6",
+        "@types/jsonwebtoken": "^9.0.10"
+    }
+}
