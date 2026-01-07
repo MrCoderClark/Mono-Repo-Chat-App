@@ -1,49 +1,48 @@
-import { createApp } from "@/app";
-import { createServer } from "http";
-import { env } from "@/config/env";
-import { logger } from "@/utils/logger";
+import { createApp } from '@/app';
+import { createServer } from 'http';
+import { env } from '@/config/env';
+import { logger } from '@/utils/logger';
+import { closeDatabase, connectToDatabase } from '@/db/sequelize';
+import { initModels } from '@/models';
 
 const main = async () => {
-  try {
-    const app = createApp();
-    const server = createServer(app);
+    try {
+        await connectToDatabase();
+        await initModels();
 
-    const port = env.AUTH_SERVICE_PORT;
+        const app = createApp();
+        const server = createServer(app);
 
-    server.listen(port, () =>
-      logger.info(`Auth service is running on port ${port}`)
-    );
+        const port = env.AUTH_SERVICE_PORT;
 
-    const shutdown = () => {
-      logger.info("Shutting down auth service");
-      server.close(() => process.exit(0));
-    };
+        server.listen(port, () => logger.info(`Auth service is running on port ${port}`));
 
-    // Promise.all([])
-    //   .catch((error) => {
-    //     logger.error(
-    //       `Error shutting down auth service. Error: ${JSON.stringify(error)}`
-    //     );
-    //     process.exit(0);
-    //   })
-    //   .finally(() => {
-    //     server.close(() => process.exit(0));
-    //   });
+        const shutdown = () => {
+            logger.info('Shutting down auth service');
+            server.close(() => process.exit(0));
+        };
 
-    // Unix signals (Linux/macOS)
-    process.on("SIGINT", shutdown);
-    process.on("SIGTERM", shutdown);
+        Promise.all([closeDatabase()])
+            .catch((error) => {
+                logger.error(`Error shutting down auth service. Error: ${JSON.stringify(error)}`);
+                process.exit(0);
+            })
+            .finally(() => {
+                server.close(() => process.exit(0));
+            });
 
-    // Log on any exit (sync only)
-    process.on("exit", (code) => {
-      console.log(`Auth service exited with code ${code}`);
-    });
-  } catch (error) {
-    logger.error(
-      `Failed to start auth service. Error: ${JSON.stringify(error)}`
-    );
-    process.exit(1);
-  }
+        // Unix signals (Linux/macOS)
+        process.on('SIGINT', shutdown);
+        process.on('SIGTERM', shutdown);
+
+        // Log on any exit (sync only)
+        process.on('exit', (code) => {
+            console.log(`Auth service exited with code ${code}`);
+        });
+    } catch (error) {
+        logger.error(`Failed to start auth service. Error: ${JSON.stringify(error)}`);
+        process.exit(1);
+    }
 };
 
 void main();
