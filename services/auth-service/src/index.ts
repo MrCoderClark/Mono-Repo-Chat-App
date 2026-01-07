@@ -17,28 +17,20 @@ const main = async () => {
 
         server.listen(port, () => logger.info(`Auth service is running on port ${port}`));
 
-        const shutdown = () => {
+        const shutdown = async () => {
             logger.info('Shutting down auth service');
+            await closeDatabase();
             server.close(() => process.exit(0));
         };
-
-        Promise.all([closeDatabase()])
-            .catch((error) => {
-                logger.error(`Error shutting down auth service. Error: ${JSON.stringify(error)}`);
-                process.exit(0);
-            })
-            .finally(() => {
-                server.close(() => process.exit(0));
-            });
 
         // Unix signals (Linux/macOS)
         process.on('SIGINT', shutdown);
         process.on('SIGTERM', shutdown);
 
         // Log on any exit (sync only)
-        process.on('exit', (code) => {
-            console.log(`Auth service exited with code ${code}`);
-        });
+        // process.on('exit', (code) => {
+        //     console.log(`Auth service exited with code ${code}`);
+        // });
     } catch (error) {
         logger.error(`Failed to start auth service. Error: ${JSON.stringify(error)}`);
         process.exit(1);
