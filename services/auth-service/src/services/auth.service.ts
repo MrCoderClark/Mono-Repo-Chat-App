@@ -4,6 +4,7 @@ import { AuthResponse, RegisterInput } from '@/types/auth';
 import { HttpError } from '@monorepo-chatapp/common';
 import { Op, Transaction } from 'sequelize';
 import { hashPassword, signAccesstoken, signRefreshtoken } from '@/utils/token';
+import { publishUserRegisteredEvent } from '@/messaging/event-publishing';
 
 const REFRESH_TOKEN_TTL_DAYS = 30;
 
@@ -42,6 +43,8 @@ export const register = async (input: RegisterInput): Promise<AuthResponse> => {
             displayName: user.displayName,
             createdAt: user.createdAt.toISOString(),
         };
+
+        publishUserRegisteredEvent(userData);
 
         return {
             accessToken,
