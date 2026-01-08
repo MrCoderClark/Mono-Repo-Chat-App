@@ -1,0 +1,35 @@
+{
+    "name": "@monorepo-chatapp/user-service",
+    "version": "1.0.0",
+    "description": "",
+    "type": "module",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "build": "tsc --project tsconfig.json",
+        "dev": "tsx watch -r tsconfig-paths/register src/index.ts",
+        "start": "node watch dist/index.js",
+        "lint": "eslint \"src/**/*.ts\"",
+        "typecheck": "tsc --noEmit --project tsconfig.json",
+        "test": "echo \"No tests yet\"",
+        "format": "prettier --check \"src/**/*.ts\""
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "packageManager": "pnpm@10.27.0",
+    "dependencies": {
+        "@monorepo-chatapp/common": "workspace:^",
+        "cors": "^2.8.5",
+        "dotenv": "^17.2.3",
+        "express": "^5.2.1",
+        "helmet": "^8.1.0",
+        "pg": "^8.16.3",
+        "sequelize": "^6.37.7"
+    },
+    "devDependencies": {
+        "@types/cors": "^2.8.19",
+        "@types/express": "^5.0.6",
+        "@types/helmet": "^4.0.0"
+    }
+}

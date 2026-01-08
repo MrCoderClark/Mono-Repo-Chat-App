@@ -2,7 +2,6 @@ import express, { type Application } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import { errorHandler } from '@/middleware/error-handler';
-import { registerRoutes } from '@/routes';
 import { createInternalAuthMiddleware } from '@monorepo-chatapp/common';
 import { env } from '@/config/env';
 
@@ -19,9 +18,11 @@ export const createApp = (): Application => {
 
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
-    app.use(createInternalAuthMiddleware(env.INTERNAL_API_TOKEN));
-
-    registerRoutes(app);
+    app.use(
+        createInternalAuthMiddleware(env.INTERNAL_API_TOKEN, {
+            exemptPaths: ['/users/health'],
+        }),
+    );
 
     app.use((_req, res) => {
         res.status(404).json({ message: 'Not found' });
